@@ -20,7 +20,7 @@ namespace DivexDemo
                 return Tuple.Create(str1, str2);
             };
 
-            DelFunc.F2 compareTwoStrings = (Action<string> log, string str1, string str2) =>
+            DelFunc.DF2 compareTwoStrings = (Action<string> log, string str1, string str2) =>
             {
                 log("Comparing");
 
@@ -32,7 +32,7 @@ namespace DivexDemo
                     return CompareResult.Equal;
             };
 
-            DelFunc.F3 writeToConsole = (CompareResult result, Action<string> writeLn) =>
+            DelFunc.DF3 writeToConsole = (CompareResult result, Action<string> writeLn) =>
             {
                 if (result == CompareResult.Bigger)
                     writeLn("The first value is bigger");
