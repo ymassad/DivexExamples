@@ -62,24 +62,10 @@ namespace DivexDemo
             var programImpureJoined =
                 programImpure.JoinByName(writeLn: 0); //Signature is ((string => ()) writeLn, (() => string) readLn, (string => ()) log)
 
-
-            List<string> inputs = new List<string>()
-            {
-                "ab",
-                "cd"
-            };
-
             programImpureJoined
                 .Invoke(
                     writeLn: Console.WriteLine,
-                    readLn: () => //Mimic reading from console
-                    {
-                        var value = inputs[0];
-
-                        inputs.RemoveAt(0);
-
-                        return value;
-                    },
+                    readLn: Console.ReadLine,
                     x => Console.WriteLine("logging: " + x));
         }
     }
