@@ -53,14 +53,14 @@ namespace DivexDemo
                 writeResult(compareResult);
             };
 
-            var programImpure = //Signature is ((string => ()) writeLn, (() => string) readLn, (string => ()) log, (string => ()) writeLn)
+            var programImpure = //Signature is ((string => ()) writeLn, (() => string) readLn, (string => ()) log, (string => ()) writeLn) => ()
                 program
                     .Inject(readStrings: readFromConsole)
                     .Inject(compare: compareTwoStrings)
                     .Inject(writeResult: writeToConsole);
 
             var programImpureJoined =
-                programImpure.JoinByName(writeLn: 0); //Signature is ((string => ()) writeLn, (() => string) readLn, (string => ()) log)
+                programImpure.JoinByName(writeLn: 0); //Signature is ((string => ()) writeLn, (() => string) readLn, (string => ()) log) => ()
 
             programImpureJoined
                 .Invoke(
