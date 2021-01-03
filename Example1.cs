@@ -66,7 +66,7 @@ namespace DivexDemo
                 .Invoke(
                     writeLn: Console.WriteLine,
                     readLn: Console.ReadLine,
-                    x => Console.WriteLine("logging: " + x));
+                    log: x => Console.WriteLine("logging: " + x));
         }
     }
 }
