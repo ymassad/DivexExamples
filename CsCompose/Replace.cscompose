@@ -1,0 +1,20 @@
+using System;
+using DIVEX.Core;
+using static DIVEX.Core.DivexUtils;
+
+[DivexCompose]
+public partial class Program
+{
+    public static void Main()
+    {
+		var log = (DateTime time, string message) =>
+			Console.WriteLine($"At {time}: {message}");
+
+		var getTime = (bool isUtc) =>
+			isUtc ? DateTime.UtcNow : DateTime.Now;
+
+		var logNow = log[time: getTime];
+
+		logNow(message: "hello", isUtc: true);
+    }
+}
