@@ -9,7 +9,7 @@ public partial class Program
     {
         var add = (int a, int b, string str) => a * 3 + b + str.Length;
 
-        var add1 = add[1, +"string1"];
+        var add1 = add[4, +"string1"];
 
         Console.Write(add1(b: 2));
     }
