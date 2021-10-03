@@ -1,0 +1,16 @@
+using System;
+using DIVEX.Core;
+using static DIVEX.Core.DivexUtils;
+
+[DivexCompose]
+public partial class Program
+{
+    public static void Main()
+    {
+        var add = (int a, int b, string str) => a * 3 + b + str.Length;
+
+        var add1 = add[1, +"string1"];
+
+        Console.Write(add1(b: 2));
+    }
+}
