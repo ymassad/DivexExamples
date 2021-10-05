@@ -1,0 +1,43 @@
+using System;
+using DIVEX.Core;
+using static DIVEX.Core.DivexUtils;
+
+public interface ILogger
+{
+    void Log(string message);
+}
+
+public class ConsoleLogger : ILogger
+{
+    public void Log(string message) => Console.WriteLine(message);  
+}
+
+public class ApplicationClass
+{
+    private readonly ILogger logger;
+    private readonly int count;
+    public ApplicationClass(ILogger logger, int count) =>
+      (this.logger, this.count) = (logger, count);
+    
+    public void Run()
+    {
+      logger.Log("Count is: " + count);
+      for(int i = 0; i < count ; i++)
+      	logger.Log("Running...");
+    }
+}
+
+[DivexCompose]
+public partial class Program
+{
+    public static void Main()
+    {
+        var create = ApplicationClass[+ConsoleLogger];
+        
+        var obj1 = create(2);
+        obj1.Run();
+      
+        var obj2 = create(3);
+        obj2.Run();
+    }
+}
