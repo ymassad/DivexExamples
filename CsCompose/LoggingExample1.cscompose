@@ -23,13 +23,13 @@ public partial class Program
             log("Done processing order " + order.Id);
         };
       
-        var logToFile1 = +logToFile[filename -> logFilename]; //Renaming parameter to make more sense after composition
+        var logToFile1 = logToFile[filename -> logFilename]; //Renaming parameter to make more sense after composition
       
         var processOrderAndLogToConsole =
           processOrderAndLog[+logToConsole];
       
         var processOrderAndLogToFile =
-          processOrderAndLog[logToFile1]; 
+          processOrderAndLog[+logToFile1]; 
           	
         var processOrderAndLogToLog1DotTxt =
           processOrderAndLogToFile[logFilename: "c:\\log1.txt"];
