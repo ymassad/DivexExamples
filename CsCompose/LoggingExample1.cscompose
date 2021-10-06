@@ -1,0 +1,45 @@
+using System;
+using DIVEX.Core;
+using static DIVEX.Core.DivexUtils;
+
+[DivexCompose]
+public partial class Program
+{
+    public record Order(int Id);
+  
+    public static void Main()
+    {
+        var logToConsole = (string msg) =>
+          Console.WriteLine("Logging to console: " + msg);
+      
+      	var logToFile = (string msg, string filename) =>
+          //Real implementation would write to file
+          Console.WriteLine("Writing to file " + filename + ": " + msg);
+      
+        var processOrderAndLog = (Order order, Action<string> log) =>
+        {
+            log("About to process order " + order.Id);
+          	Console.WriteLine("Actually processing order " + order.Id);
+            log("Done processing order " + order.Id);
+        };
+      
+        var processOrderAndLogToConsole =
+          processOrderAndLog[+logToConsole];
+      
+        var processOrderAndLogToFile =
+          processOrderAndLog
+          	[+logToFile[filename -> logFilename]]; //Renaming parameter to make more sense after composition
+          	
+        var processOrderAndLogToLog1DotTxt =
+          processOrderAndLogToFile[logFilename: "c:\\log1.txt"];
+      
+        var processOrderAndLogToLog2DotTxt =
+          processOrderAndLogToFile[logFilename: "c:\\log2.txt"];
+        
+        var order = new Order(2);
+         
+        processOrderAndLogToConsole(order);
+        processOrderAndLogToLog1DotTxt(order);
+        processOrderAndLogToLog2DotTxt(order);
+    }
+}
