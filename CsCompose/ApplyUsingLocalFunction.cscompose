@@ -1,0 +1,19 @@
+using System;
+using DIVEX.Core;
+using static DIVEX.Core.DivexUtils;
+
+[DivexCompose]
+public partial class Program
+{
+    public static void Main()
+    {
+        int Add(int a, int b)
+        {
+            return a + b;
+        }
+
+        var add1 = Add[a: 1];
+
+        Console.Write(add1(b: 2));
+    }
+}
