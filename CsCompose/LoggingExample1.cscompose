@@ -44,3 +44,15 @@ public partial class Program
         processOrderAndLogToLog2DotTxt(order);
     }
 }
+/*
+Logging to console: About to process order 2
+Actually processing order 2
+Logging to console: Done processing order 2
+Writing to file c:\log1.txt: About to process order 2
+Actually processing order 2
+Writing to file c:\log1.txt: Done processing order 2
+Writing to file c:\log2.txt: About to process order 2
+Actually processing order 2
+Writing to file c:\log2.txt: Done processing order 2
+
+*/
