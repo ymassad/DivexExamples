@@ -37,3 +37,10 @@ public partial class Program
         process2("c:\\logfile1.txt");
     }
 }
+/* <Current Time: 10/09/2021 08:30:56>
+Logging to console: Getting time
+Logging to console: Time is : 10/09/2021 08:30:56
+Logging to file c:\logfile1.txt: Getting time
+Logging to file c:\logfile1.txt: Time is : 10/09/2021 08:30:56
+
+*/
