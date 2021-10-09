@@ -16,3 +16,6 @@ public partial class Program
         Console.Write(subtract1(3));
     }
 }
+/*
+2
+*/
