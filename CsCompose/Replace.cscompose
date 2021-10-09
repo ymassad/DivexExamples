@@ -18,3 +18,7 @@ public partial class Program
 		logNow(message: "hello", isUtc: true);
     }
 }
+/* <Current Time: 10/9/2021 8:30:56 AM>
+At 10/9/2021 8:30:56 AM: hello
+
+/*
