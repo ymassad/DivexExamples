@@ -55,3 +55,8 @@ public static partial class Program
             uri: new Uri("https://local.lab/Document"));
     }
 }
+/*
+Posting FileContents to https://local.lab/Document
+Posting FileContents to https://local.lab/Document
+
+*/
