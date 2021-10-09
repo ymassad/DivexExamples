@@ -20,12 +20,15 @@ public partial class Program
             Console.WriteLine("Disabling user " + userId + " in " + address.Value);
         }
 
+        var disableUser0 =
+            DoTwoActions[
+                DisableUserInSystem[
+                  +new Address("https://server1.demo")],
+                DisableUserInSystem[
+                  +new Address("https://server2.demo")]];
+
         var disableUser = 
-          DoTwoActions[
-          	DisableUserInSystem[
-              +new Address("https://server1.demo")],
-        	DisableUserInSystem[
-              +new Address("https://server2.demo")]]
+          disableUser0
           .Join(userId);
         
         disableUser("13");      
