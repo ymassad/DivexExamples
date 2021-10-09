@@ -34,3 +34,8 @@ public partial class Program
         disableUser("13");      
     }
 }
+/*
+Disabling user 13 in https://server1.demo
+Disabling user 13 in https://server2.demo
+
+*/
