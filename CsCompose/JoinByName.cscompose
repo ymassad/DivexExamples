@@ -1,0 +1,33 @@
+using System;
+using DIVEX.Core;
+using static DIVEX.Core.DivexUtils;
+
+[DivexCompose]
+public partial class Program
+{
+    public record Address(string Value);
+  
+    public static void Main()
+    {
+        void DoTwoActions(Action action1, Action action2)
+        {
+            action1();  
+            action2();
+        }      
+      
+        void DisableUserInSystem(string userId, Address address)
+        {
+            Console.WriteLine("Disabling user " + userId + " in " + address.Value);
+        }
+
+        var disableUser = 
+          DoTwoActions[
+          	DisableUserInSystem[
+              +new Address("https://server1.demo")],
+        	DisableUserInSystem[
+              +new Address("https://server2.demo")]]
+          .Join(userId);
+        
+        disableUser("13");      
+    }
+}
