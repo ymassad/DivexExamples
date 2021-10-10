@@ -1,0 +1,25 @@
+using System;
+using DIVEX.Core;
+using static DIVEX.Core.DivexUtils;
+
+[DivexCompose]
+public static partial class Program
+{
+    public static void WriteTypes<T1, T2>(T1 value1, T2 value2)
+    {
+        Console.WriteLine(value1.GetType());
+        Console.WriteLine(value2.GetType());
+    }
+  
+    public static void Main()
+    {
+        var writeTypes1 = WriteTypes[value2: 1f];
+        
+        writeTypes1("str");
+    }
+}
+/*
+System.String
+System.Single
+
+*/
