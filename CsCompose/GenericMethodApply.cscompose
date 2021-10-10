@@ -7,8 +7,7 @@ public static partial class Program
 {
     public static void WriteTypes<T1, T2>(T1 value1, T2 value2)
     {
-        Console.WriteLine(value1.GetType());
-        Console.WriteLine(value2.GetType());
+        Console.WriteLine(value1.GetType() + ", " + value2.GetType());
     }
   
     public static void Main()
@@ -16,10 +15,11 @@ public static partial class Program
         var writeTypes1 = WriteTypes[value2: 1f];
         
         writeTypes1("str");
+      	writeTypes1(1L);
     }
 }
 /*
-System.String
-System.Single
+System.String, System.Single
+System.Int64, System.Single
 
 */
