@@ -1,0 +1,21 @@
+using System;
+using DIVEX.Core;
+using static DIVEX.Core.DivexUtils;
+
+[DivexCompose]
+public partial class Program
+{
+    public static void Main()
+    {
+        var toPow3 = Math.Pow[y: 3];
+      
+        Console.WriteLine(toPow3(2));
+      
+        Console.WriteLine(toPow3(5));
+    }
+}
+/*
+8
+125
+
+*/
