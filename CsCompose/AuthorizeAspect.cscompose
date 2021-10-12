@@ -1,0 +1,83 @@
+using System;
+using DIVEX.Core;
+using static DIVEX.Core.DivexUtils;
+
+public record UserId(string Id);
+
+[DivexCompose]
+public static partial class Program
+{
+    public static TResult Authorize<TResult>(
+      UserId userId,
+      Func<UserId, TResult> action,
+      Func<UserId, bool> hasAccess)
+    {
+          if(!hasAccess(userId))
+            throw new Exception("Access denied for user " + userId.Id);
+      
+          return action(userId);
+    }
+                                             
+    public static void DeleteFile(UserId userId, string filename)
+    {
+        Console.WriteLine("Deleting file " + filename + ", userId: " + userId.Id);  
+    }
+
+    public static string ObtaineFileInformation(
+      string informationKind,
+      string filename,
+      UserId userId)
+    {
+        Console.WriteLine("Obtaining information about file " + filename + ", kind: " + informationKind + ", userId: " + userId.Id);  
+      
+        return "some information";
+    }
+  
+    public static bool UserHasAccess(UserId id)
+    {
+        //Real code would consult some kind of database
+        return id.Id == "1";
+    }
+  
+    public static void Main()
+    {
+        var authorize = Authorize[hasAccess: UserHasAccess];
+      
+        var authorizeAndDeleteFile = authorize[+DeleteFile];
+      
+        var authorizeAndObtaineFileInformation = authorize[+ObtaineFileInformation];
+      
+        var userId1 = new UserId("1");
+        
+        authorizeAndDeleteFile(userId1, "somefile.txt");
+        Console.WriteLine(authorizeAndObtaineFileInformation(userId1, "size information", "somefile.txt"));
+      
+        var userId2 = new UserId("2");
+      
+        try
+        {
+            authorizeAndDeleteFile(userId2, "somefile.txt");
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+      
+        try
+        {
+            authorizeAndObtaineFileInformation(userId2, "size information", "somefile.txt");
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }      
+    }
+}
+/*
+Deleting file somefile.txt, userId: 1
+Obtaining information about file somefile.txt, kind: size information, userId: 1
+some information
+Access denied for user 2
+Access denied for user 2
+
+*/
