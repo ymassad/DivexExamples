@@ -20,7 +20,8 @@ public static partial class Program
                                              
     public static void DeleteFile(UserId userId, string filename)
     {
-        Console.WriteLine("Deleting file " + filename + ", userId: " + userId.Id);  
+        Console.WriteLine(
+          "Deleting file " + filename + ", userId: " + userId.Id);  
     }
 
     public static string ObtaineFileInformation(
@@ -28,7 +29,9 @@ public static partial class Program
       string filename,
       UserId userId)
     {
-        Console.WriteLine("Obtaining information about file " + filename + ", kind: " + informationKind + ", userId: " + userId.Id);  
+        Console.WriteLine(
+          "Obtaining information about file " + filename +
+          ", kind: " + informationKind + ", userId: " + userId.Id);  
       
         return "some information";
     }
@@ -45,12 +48,15 @@ public static partial class Program
       
         var authorizeAndDeleteFile = authorize[+DeleteFile];
       
-        var authorizeAndObtaineFileInformation = authorize[+ObtaineFileInformation];
+        var authorizeAndObtaineFileInformation =
+          authorize[+ObtaineFileInformation];
       
         var userId1 = new UserId("1");
         
         authorizeAndDeleteFile(userId1, "somefile.txt");
-        Console.WriteLine(authorizeAndObtaineFileInformation(userId1, "size information", "somefile.txt"));
+        Console.WriteLine(
+          authorizeAndObtaineFileInformation(
+            userId1, "size information", "somefile.txt"));
       
         var userId2 = new UserId("2");
       
@@ -65,7 +71,8 @@ public static partial class Program
       
         try
         {
-            authorizeAndObtaineFileInformation(userId2, "size information", "somefile.txt");
+            authorizeAndObtaineFileInformation(
+              userId2, "size information", "somefile.txt");
         }
         catch(Exception ex)
         {
