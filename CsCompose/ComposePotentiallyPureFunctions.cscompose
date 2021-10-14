@@ -1,0 +1,59 @@
+using System;
+using DIVEX.Core;
+using static DIVEX.Core.DivexUtils;
+
+
+[DivexCompose]
+public static partial class Program
+{
+    public static void SayHi(Action<string> write, string name)
+    {
+        write("Hello, " + name + "!");
+    }
+
+    public static void SayHiToMultiplePeople(
+      Action<string> sayHi, string[] names)
+    {
+        foreach (var name in names)
+            sayHi(name);
+    }
+
+    public static void StoreTheFactThatWeSaidHi(
+      Action<string, string> appendToFile, string[] names)
+    {
+        appendToFile(
+          "c:\\logfile.txt", "We said Hi to " +
+          string.Join(", ", names) + Environment.NewLine);
+    }
+
+    public static void SayHiToMultiplePeopleAndStoreTheFact(
+        Action<string[]> sayHiToMultiplePeople,
+        Action<string[]> storeTheFactThatWeSaidHi,
+        string[] names)
+    {
+        sayHiToMultiplePeople(names);
+        storeTheFactThatWeSaidHi(names);
+    }
+
+    public static void Main()
+    {
+		    var sayHiToMultiplePeople = SayHiToMultiplePeople[SayHi];
+
+        var sayHiToMultiplePeopleAndStoreTheFact =
+            SayHiToMultiplePeopleAndStoreTheFact[
+          		sayHiToMultiplePeople, StoreTheFactThatWeSaidHi];
+
+        //Minic File.AppendAllText
+        void AppendAllText(string filename, string content)
+        {
+    	    Console.WriteLine(
+              "Writing content to " + filename + ": " + content);
+        }
+
+        sayHiToMultiplePeopleAndStoreTheFact(
+          Console.WriteLine, AppendAllText, new[] { "John", "Jane" });
+    }
+}
+/*
+
+*/
