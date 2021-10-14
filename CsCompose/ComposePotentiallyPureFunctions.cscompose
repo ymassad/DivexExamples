@@ -37,8 +37,8 @@ public static partial class Program
 
     public static void Main()
     {
-		    var sayHiToMultiplePeople = SayHiToMultiplePeople[SayHi];
-
+        var sayHiToMultiplePeople = SayHiToMultiplePeople[SayHi];
+    
         var sayHiToMultiplePeopleAndStoreTheFact =
             SayHiToMultiplePeopleAndStoreTheFact[
           		sayHiToMultiplePeople, StoreTheFactThatWeSaidHi];
