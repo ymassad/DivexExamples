@@ -1,0 +1,38 @@
+using System;
+using DIVEX.Core;
+using static DIVEX.Core.DivexUtils;
+using System.Diagnostics;
+
+[DivexCompose]
+public static partial class Program
+{
+    public static TResult Monitor<TResult>(
+      Func<TResult> action)
+    {
+        var sw = Stopwatch.StartNew();
+      
+        try
+        {
+          return action();
+        }
+        finally
+        {
+          Console.WriteLine("Time: " + sw.Elapsed);
+        }
+    }
+    
+    public static void Main()
+    {
+        int Add (int a, int b) => a + b;
+        int Square (int a) => a * a;
+
+        var add1 = Monitor[Add];
+        var square1 = Monitor[Square];
+        
+        Console.WriteLine(add1(3,4));
+        Console.WriteLine(square1(3));
+    }
+}
+/*
+//TODO
+*/
