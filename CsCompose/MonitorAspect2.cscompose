@@ -29,12 +29,12 @@ public static partial class Program
         var add1 = Monitor[Add];
         Console.WriteLine(
           //recordTime is bubbled up to add1
-          add1(3,4, ts => Console.WriteLine("Time2 is: " + ts)));
+          add1(3,4, ts => Console.WriteLine("Time1 is: " + ts)));
         
         var monitorToConsole = Monitor[
             //recordTime is fixed here
             recordTime: (TimeSpan ts) =>
-                Console.WriteLine("Time1 is: " + ts)];
+                Console.WriteLine("Time2 is: " + ts)];
       
         var square1 = monitorToConsole[Square];      
         Console.WriteLine(square1(3));
