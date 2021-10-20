@@ -40,6 +40,10 @@ public static partial class Program
         Console.WriteLine(square1(3));
     }
 }
-/*
+/* <Elapsed: 00:00:00.0002366>
+Time1 is: 00:00:00.0002366
+7
+Time2 is: 00:00:00.0002366
+9
 
 */
