@@ -1,0 +1,52 @@
+using System;
+using DIVEX.Core;
+using System.Collections.Generic;
+using static DIVEX.Core.DivexUtils;
+
+[DivexCompose]
+public static partial class Program
+{
+    public static TResult Cache<TInput, TResult>(
+      Func<TResult> action,
+      Func<TInput> getInput,
+      Dictionary<TInput, TResult> cache)
+    {
+        var input = getInput();
+        if(cache.TryGetValue(input, out var cachedResult))
+        {
+          Console.WriteLine("Returning result from cache");
+          return cachedResult;
+        }
+        Console.WriteLine("Calculating result");
+        var result = action();
+        Console.WriteLine("Storing result in cache");
+        cache.Add(input, result);
+        return result;
+    }
+  
+    public static void Main()
+    {
+        var add = (int a, int b) => a + b;
+
+        var addWithCache = Cache
+          [action: add]
+          [getInput: (int a, int b) => (a,b)]
+          [cache: new Dictionary<(int a, int b), int>()]
+          .Join(); //Join the two 'a' parameters and the two 'b' parameters
+      
+        Console.WriteLine(addWithCache(1,2));
+        Console.WriteLine(addWithCache(1,2));
+        Console.WriteLine(addWithCache(10,5));
+    }
+}
+/*
+Calculating result
+Storing result in cache
+3
+Returning result from cache
+3
+Calculating result
+Storing result in cache
+15
+
+*/
