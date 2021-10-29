@@ -210,7 +210,7 @@ public static partial class Program
             authTokenForTranslate: new AuthenticationToken("Token1"),
             authTokenForClassify: new AuthenticationToken("Token2"),
             authTokenForDetect: new AuthenticationToken("Token3"),
-            technicalDocumentsTableName: "TechnicalDocuments3",
+            technicalDocumentsTableName: "TechnicalDocuments5",
         	detectionLevel: 7);
     }
 }
@@ -229,6 +229,6 @@ Processing document 5
 Detecting need for translation of document 5 using web service http://local.dev/detect. Detection level is 7
 Translating document 5 using web service http://local.dev/translate
 Classifiying document 5 using web service http://local.dev/classify
-Saving document 5 to database table TechnicalDocuments3
+Saving document 5 to database table TechnicalDocuments5
 
 */
