@@ -1,0 +1,177 @@
+using System;
+using DIVEX.Core;
+using static DIVEX.Core.DivexUtils;
+
+public record Document(int Id, string Contents);
+
+public record AuthenticationToken(string Value);
+
+public enum DocumentType
+{
+    Technical,
+    Financial,
+    Administrative,
+    Other
+}
+
+[DivexCompose]
+public static partial class Program
+{
+    public static void SaveDocument(
+        Document document,
+        Func<Document, DocumentType> classify,
+        Action<Document> saveTechnicalDocument,
+        Action<Document> saveBusinessDocument,
+        Action<Document> saveOtherDocument)
+    {
+        var type = classify(document);
+
+        if (type == DocumentType.Technical)
+        {
+            saveTechnicalDocument(document);
+        }
+        else if (type == DocumentType.Financial ||
+               type == DocumentType.Administrative)
+        {
+            saveBusinessDocument(document);
+        }
+        else
+        {
+            saveOtherDocument(document);
+        }
+    }
+
+    public static void SaveDocumentToDatabase(
+        Document document,
+        string tableName)
+    {
+        Console.WriteLine("Saving document " + document.Id + " to database table " + tableName);
+    }
+
+    public static void SaveDocumentToFileSystem(
+        Document document,
+        string folderPath)
+    {
+        Console.WriteLine("Saving document " + document.Id + " to folder " + folderPath);
+    }
+
+    public static DocumentType ClassifyUsingWebService(
+        Document document,
+        string webServiceUrl,
+        AuthenticationToken authenticationToken)
+    {
+        Console.WriteLine(
+          "Classifiying document " + document.Id + " using web service " + webServiceUrl);
+
+        return DocumentType.Technical;
+    }
+
+    public static DocumentType ClassifyUsing3rdPartLibrary(
+        Document document)
+    {
+        Console.WriteLine(
+          "Classifiying document " + document.Id + " using 3rd party library");
+
+        return DocumentType.Financial;
+    }
+
+    public static bool DetectNeedForTranslationUsing3rdPartyLibrary(
+        Document document,
+        string modelFile)
+    {
+        Console.WriteLine("Detecting need for translation of document " + document.Id + " using 3rd party library");
+
+        return true;
+    }
+
+    public static bool DetectNeedForTranslationUsingWebService(
+        Document document,
+        string webServiceUrl,
+        AuthenticationToken authenticationToken,
+        int detectionLevel)
+    {
+        Console.WriteLine(
+          "Detecting need for translation of document " + document.Id + " using web service. Detection level is " + detectionLevel);
+
+        return true;
+    }
+
+    public static Document TranslateUsing3rdPartyLibrary(
+        Document document,
+        string modelFile)
+    {
+        Console.WriteLine("Translating document " + document.Id + " using 3rd party library");
+
+        return document;
+    }
+
+    public static Document TranslateUsingWebService(
+        Document document,
+        string webServiceUrl,
+        AuthenticationToken authenticationToken)
+    {
+        Console.WriteLine(
+          "Translating document " + document.Id + " using web service " + webServiceUrl);
+
+        return document;
+    }
+
+    public static void ProcessDocument(
+        Document document,
+        Func<Document, bool> needsTranslation,
+        Func<Document, Document> translate,
+        Action<Document> saveDocument)
+    {
+        Console.WriteLine("Processing document " + document.Id);
+        if (needsTranslation(document))
+        {
+            document = translate(document);
+        }
+        saveDocument(document);
+    }
+
+
+    public static void Main()
+    {
+        var processDocument = ProcessDocument
+            [needsTranslation: DetectNeedForTranslationUsing3rdPartyLibrary[modelFile: "c:\\modelFile1.dat"]]
+            [translate: TranslateUsingWebService[webServiceUrl: "http://local.dev/translate"][authenticationToken -> authTokenForTranslate]]
+            [saveDocument: SaveDocument]
+            [saveTechnicalDocument: SaveDocumentToDatabase[tableName -> technicalDocumentsTableName]]
+            [saveBusinessDocument: SaveDocumentToDatabase[tableName: "BusinessDocuments"]]
+            [saveOtherDocument: SaveDocumentToFileSystem[folderPath: "C:\\OtherDocuments"]];
+
+        var processDocument1 =
+            processDocument[classify: ClassifyUsingWebService[webServiceUrl: "http://local.dev/classify"][authenticationToken -> authTokenForClassify]];
+
+        var processDocument2 =
+            processDocument[classify: ClassifyUsing3rdPartLibrary];
+
+
+        processDocument1(
+            new Document(3, "Hello"),
+            authTokenForTranslate: new AuthenticationToken("Token1"),
+            authTokenForClassify: new AuthenticationToken("Token2"),
+            technicalDocumentsTableName: "TechnicalDocuments3");
+
+
+        processDocument2(
+            new Document(4, "Hi"),
+            authTokenForTranslate: new AuthenticationToken("Token3"),
+            technicalDocumentsTableName: "TechnicalDocuments4");
+
+    }
+}
+/*
+Processing document 3
+Detecting need for translation of document 3 using 3rd party library
+Translating document 3 using web service http://local.dev/translate
+Classifiying document 3 using web service http://local.dev/classify
+Saving document 3 to database table TechnicalDocuments3
+Processing document 4
+Detecting need for translation of document 4 using 3rd party library
+Translating document 4 using web service http://local.dev/translate
+Classifiying document 4 using 3rd party library
+Saving document 4 to database table BusinessDocuments
+
+*/
