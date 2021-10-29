@@ -179,18 +179,6 @@ public static partial class Program
             processDocument1[classify: ClassifyUsing3rdPartLibrary];
 
 
-        processDocument2(
-            new Document(3, "Hello"),
-            authTokenForTranslate: new AuthenticationToken("Token1"),
-            authTokenForClassify: new AuthenticationToken("Token2"),
-            technicalDocumentsTableName: "TechnicalDocuments3");
-
-
-        processDocument3(
-            new Document(4, "Hi"),
-            authTokenForTranslate: new AuthenticationToken("Token3"),
-            technicalDocumentsTableName: "TechnicalDocuments4");
-
         var processDocument4 = 
             processDocument
                 [needsTranslation:
@@ -204,6 +192,18 @@ public static partial class Program
            			ClassifyUsingWebService
                        [webServiceUrl: "http://local.dev/classify"]
                        [authenticationToken -> authTokenForClassify]];
+      
+        processDocument2(
+            new Document(3, "Hello"),
+            authTokenForTranslate: new AuthenticationToken("Token1"),
+            authTokenForClassify: new AuthenticationToken("Token2"),
+            technicalDocumentsTableName: "TechnicalDocuments3");
+
+
+        processDocument3(
+            new Document(4, "Hi"),
+            authTokenForTranslate: new AuthenticationToken("Token3"),
+            technicalDocumentsTableName: "TechnicalDocuments4");      
       
         processDocument5(
             new Document(5, "Hola"),
