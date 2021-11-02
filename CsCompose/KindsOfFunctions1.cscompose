@@ -1,0 +1,41 @@
+using System;
+using DIVEX.Core;
+using static DIVEX.Core.DivexUtils;
+
+public static class Module1
+{
+	public static int AddInOtherStaticClass(int a, int b) => a + b;  
+}
+
+public class Class1
+{
+    public int result;
+    public Class1(int a, int b) => this.result = a + b;
+}
+
+[DivexCompose]
+public static partial class Program
+{
+    public static int AddStaticMethod(int a, int b) => a + b;  
+  
+    public static void Main()
+    {
+        var addLambda = (int a, int b) => a + b;
+
+        int AddLocalFunction(int a, int b) => a + b;
+        
+        Console.WriteLine(addLambda[b: 1](a: 2));
+        Console.WriteLine(AddLocalFunction[b: 1](a: 2));
+        Console.WriteLine(AddStaticMethod[b: 1](a: 2));
+        Console.WriteLine(Module1.AddInOtherStaticClass[b: 1](a: 2));
+        Console.WriteLine(Class1[b: 1](a: 2).result);
+    }
+}
+/*
+3
+3
+3
+3
+3
+
+*/
