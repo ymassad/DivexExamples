@@ -43,7 +43,7 @@ public static partial class Program
             SayHiToMultiplePeopleAndStoreTheFact[
           		sayHiToMultiplePeople, StoreTheFactThatWeSaidHi];
 
-        //Minic File.AppendAllText
+        //Simulate File.AppendAllText
         void AppendAllText(string filename, string content)
         {
     	    Console.WriteLine(
