@@ -31,9 +31,9 @@ public static partial class Program
     }
 }
 /*
-Calculating...
-  8
-Calculating...  
-    6
+  Calculating...
+8
+    Calculating...  
+6
 
 */
