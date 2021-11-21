@@ -12,7 +12,7 @@ module FSharpModule =
 
     let processDocument document needsTranslation translate saveDocument =
         printfn "Processing document %i" document.Id
-        if needsTranslation(document) then
+        if needsTranslation document  then
             document |> translate |> saveDocument
         else
             document |> saveDocument
