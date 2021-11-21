@@ -1,0 +1,81 @@
+﻿using System;
+using DIVEX.Core;
+using FSharpProject;
+using static FSharpProject.FSharpModule;
+
+namespace DocumentTranslationFSharp
+{
+    [DivexCompose]
+    public static partial class Program
+    {
+        static void Main(string[] args)
+        {
+            var processDocument = FSharpModule.processDocument
+                [translate:
+             	    FSharpModule.translateUsingWebService
+                      [webServiceUrl: "http://local.dev/translate"]
+                      [authenticationToken -> authTokenForTranslate]]
+                [saveDocument: FSharpModule.saveDocument]
+                [saveTechnicalDocument:
+                    FSharpModule.saveDocumentToDatabase
+                        [tableName -> technicalDocumentsTableName]]
+                [saveBusinessDocument:
+                    FSharpModule.saveDocumentToDatabase
+                        [tableName: "BusinessDocuments"]]
+                [saveOtherDocument:
+                    FSharpModule.saveDocumentToFileSystem
+                        [folderPath: "C:\\OtherDocuments"]];
+
+            var processDocument1 = 
+                processDocument
+                    [needsTranslation:
+             	        FSharpModule.detectNeedForTranslationUsing3rdPartyLibrary
+                            [modelFile: "c:\\modelFile1.dat"]];
+      
+            var processDocument2 =
+                processDocument1
+          	        [classify:
+                        FSharpModule.classifyUsingWebService
+                            [webServiceUrl: "http://local.dev/classify"]
+                            [authenticationToken -> authTokenForClassify]];
+
+            var processDocument3 =
+                processDocument1[classify: FSharpModule.classifyUsing3rdPartyLibrary];
+
+
+            var processDocument4 = 
+                processDocument
+                    [needsTranslation:
+             	        FSharpModule.detectNeedForTranslationUsingWebService
+                 		    [webServiceUrl: "http://local.dev/detect"]
+                		    [authenticationToken -> authTokenForDetect]];      
+      
+            var processDocument5 = 
+        	    processDocument4
+            	    [classify:
+           			    FSharpModule.classifyUsingWebService
+                           [webServiceUrl: "http://local.dev/classify"]
+                           [authenticationToken -> authTokenForClassify]];
+      
+            processDocument2(
+                new Document(3, "Hello"),
+                authTokenForTranslate: new AuthenticationToken("Token1"),
+                authTokenForClassify: new AuthenticationToken("Token2"),
+                technicalDocumentsTableName: "TechnicalDocuments3");
+
+
+            processDocument3(
+                new Document(4, "Hi"),
+                authTokenForTranslate: new AuthenticationToken("Token3"),
+                technicalDocumentsTableName: "TechnicalDocuments4");      
+      
+            processDocument5(
+                new Document(5, "Hola"),
+                authTokenForTranslate: new AuthenticationToken("Token1"),
+                authTokenForClassify: new AuthenticationToken("Token2"),
+                authTokenForDetect: new AuthenticationToken("Token3"),
+                technicalDocumentsTableName: "TechnicalDocuments5",
+        	    detectionLevel: 7);
+        }
+    }
+}

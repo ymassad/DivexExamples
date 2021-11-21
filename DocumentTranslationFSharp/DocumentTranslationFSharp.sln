@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Composition", "Composition\Composition.csproj", "{1417A243-67FB-47DF-9E6C-3E5821E0466B}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharpProject", "FSharpProject\FSharpProject.fsproj", "{FE257472-BACB-4B94-A811-9E9B0CCDD059}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1417A243-67FB-47DF-9E6C-3E5821E0466B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1417A243-67FB-47DF-9E6C-3E5821E0466B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1417A243-67FB-47DF-9E6C-3E5821E0466B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1417A243-67FB-47DF-9E6C-3E5821E0466B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE257472-BACB-4B94-A811-9E9B0CCDD059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE257472-BACB-4B94-A811-9E9B0CCDD059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE257472-BACB-4B94-A811-9E9B0CCDD059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE257472-BACB-4B94-A811-9E9B0CCDD059}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {386B4342-4B0C-4748-9292-CE815654949D}
+	EndGlobalSection
+EndGlobal
