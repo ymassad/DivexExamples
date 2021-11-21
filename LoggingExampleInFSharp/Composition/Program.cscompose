@@ -1,0 +1,33 @@
+﻿using System;
+using FSharpProject;
+using static FSharpProject.FSharpModule;
+
+namespace Composition
+{
+    [DivexCompose]
+    public static partial class Program
+    {
+        static void Main(string[] args)
+        {
+            var logToFile1 = logToFile[filename -> logFilename]; //Renaming parameter to make more sense after composition
+      
+            var processOrderAndLogToConsole =
+              processOrderAndLog[+logToConsole];
+      
+            var processOrderAndLogToFile =
+              processOrderAndLog[+logToFile1]; 
+          	
+            var processOrderAndLogToLog1DotTxt =
+              processOrderAndLogToFile[logFilename: "c:\\log1.txt"];
+      
+            var processOrderAndLogToLog2DotTxt =
+              processOrderAndLogToFile[logFilename: "c:\\log2.txt"];
+        
+            var order = new Order(2);
+         
+            processOrderAndLogToConsole(order);
+            processOrderAndLogToLog1DotTxt(order);
+            processOrderAndLogToLog2DotTxt(order);
+        }
+    }
+}

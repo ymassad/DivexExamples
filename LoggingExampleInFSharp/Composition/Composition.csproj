@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Program.cscompose" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="Program.cscompose" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DIVEX.Core" Version="0.9.39" />
+    <PackageReference Include="DIVEX.Core.FSharp" Version="0.9.39" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FSharpProject\FSharpProject.fsproj" />
+  </ItemGroup>
+
+</Project>
