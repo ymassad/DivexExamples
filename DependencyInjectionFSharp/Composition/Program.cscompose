@@ -1,0 +1,27 @@
+﻿using System;
+using FSharpProject;
+using static FSharpProject.FSharpModule;
+namespace DependencyInjectionFSharp
+{
+    [DivexCompose]
+    public static partial class Program
+    {
+        static void Main(string[] args)
+        {
+            var programPotentiallyPure =
+                FSharpModule.program
+                    [readStrings: askUserForStrings]
+                    [compare: compareTwoStrings]
+                    [writeResult: writeResult]
+                .Join();
+
+            var programImpure = programPotentiallyPure
+                [readLn: () => Console.ReadLine()]
+                [writeLn: str => Console.WriteLine(str)]
+                [log: msg => Console.WriteLine("Log: " + msg)];
+
+            programImpure();
+
+        }
+    }
+}
