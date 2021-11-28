@@ -1,8 +1,4 @@
-License
-Text and images
-All text and images copyright (c) 2012-2021 Scott Wlaschin
-
-MIT License for code
+MIT License for code from fsharpforfunandprofit.com
 Code copyright (c) 2012-2021 Scott Wlaschin
 
 All code on this site is released under the free MIT License as follows:
