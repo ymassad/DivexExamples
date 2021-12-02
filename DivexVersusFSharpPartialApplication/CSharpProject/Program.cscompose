@@ -1,0 +1,39 @@
+﻿using System;
+using DIVEX.Core;
+using static FSharpProject.FSharpModule2;
+
+namespace CSharpProject
+{
+    [DivexCompose]
+    public static partial class Program
+    {
+        static void Main(string[] args)
+        {
+/*
+    let log1 = logToFile "c:\\log1.txt"
+    let httpPost1 = httpPost log1
+    let uploadFile1 = uploadFile "https://server2.demo" false
+    let recordFileSize1 = recordFileSize httpPost1 "https://server1.demo"
+    let processFile1 = processFile getFileSize recordFileSize1 uploadFile1 log1
+    let processFolder1 = processFolder processFile1 log1 true getFiles
+*/
+            var processFolderPotentiallyPure = processFolder
+                [processSubFolders: true]
+                [processFile: processFile]
+                [recordFileSize: recordFileSize[serverUrl: "https://server1.demo"]]
+                [uploadFile: uploadFile[serverUrl: "https://server2.demo", useHttpPut: false]]
+                .Join(log);
+
+            var log = logToFile[filename: "c:\\log1.txt"];
+
+            var httpPost1 = httpPost[log: log];
+
+            var processFolderImpure = 
+                processFolderPotentiallyPure
+                    [log: log]
+                    [getFileSize: getFileSize]
+                    [httpPost: httpPost1];
+
+        }
+    }
+}
