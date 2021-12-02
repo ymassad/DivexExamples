@@ -16,6 +16,7 @@
   <ItemGroup>
     <PackageReference Include="DIVEX.Core" Version="0.9.39" />
     <PackageReference Include="DIVEX.Core.FSharp" Version="0.9.39" />
+    <PackageReference Include="FluentAssertions" Version="6.2.0" />
   </ItemGroup>
 
   <ItemGroup>

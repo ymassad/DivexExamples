@@ -1,6 +1,10 @@
 ﻿using System;
 using DIVEX.Core;
 using static FSharpProject.FSharpModule2;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using FluentAssertions;
 
 namespace CSharpProject
 {
@@ -17,23 +21,104 @@ namespace CSharpProject
     let processFile1 = processFile getFileSize recordFileSize1 uploadFile1 log1
     let processFolder1 = processFolder processFile1 log1 true getFiles
 */
-            var processFolderPotentiallyPure = processFolder
-                [processSubFolders: true]
-                [processFile: processFile]
-                [recordFileSize: recordFileSize[serverUrl: "https://server1.demo"]]
-                [uploadFile: uploadFile[serverUrl: "https://server2.demo", useHttpPut: false]]
-                .Join(log);
+
+            Test();
+            return;
+
+            var processFolderPotentiallyPure = Create();
 
             var log = logToFile[filename: "c:\\log1.txt"];
 
             var httpPost1 = httpPost[log: log];
 
+            var httpPut1 = httpPut[log: log];
+
             var processFolderImpure = 
                 processFolderPotentiallyPure
                     [log: log]
                     [getFileSize: getFileSize]
-                    [httpPost: httpPost1];
+                    [httpPost: httpPost1]
+                    [httpPut: httpPut1]
+                    [getFiles: getFiles]
+                    [readFile: File.ReadAllBytes];
 
+            processFolderImpure("c:\\folder1");
+
+        }
+
+        public static void Test()
+        {
+            var logList = new List<string>();
+
+            var httpPostList = new List<(Uri serverUri, string message)>();
+            var httpPutList = new List<(Uri serverUri, string message)>();
+
+            var files = new Dictionary<string, byte[]>
+            {
+                ["c:\\folder1\\file1.txt"] = new byte[]{0x1, 0x2, 0x3, 0x4},
+                ["c:\\folder1\\file2.txt"] = new byte[]{0x1, 0x2, 0x3, 0x4, 0x5, 0x6},
+            };
+
+            void Log(string message) => logList.Add(message);
+
+            string[] GetFiles(string folder, SearchOption searchOptions)
+            {
+                if(folder != "c:\\folder1")
+                    return Array.Empty<string>();
+                return files.Keys.ToArray();
+            }
+
+            long GetFileSize(string filename) => files[filename].Length;
+
+            void HttpPost(Uri serverUri, string message) => httpPostList.Add(( serverUri, message));
+            void HttpPut(Uri serverUri, string message) => httpPutList.Add(( serverUri, message));
+
+            byte[] ReadFile(string filename) => files[filename];
+
+            var processFolderPotentiallyPure = Create();
+
+            var process = processFolderPotentiallyPure
+                [log: Log]
+                [getFiles: GetFiles]
+                [getFileSize: GetFileSize]
+                [httpPost: HttpPost]
+                [httpPut: HttpPut]
+                [readFile: ReadFile];
+
+            process("c:\\folder1");
+
+            logList.Should().BeEquivalentTo(new[]
+            {
+                "Processing file c:\\folder1\\file1.txt",
+                "Uploading file c:\\folder1\\file1.txt",
+                "Recording filesize c:\\folder1\\file1.txt",
+                "Processing file c:\\folder1\\file2.txt",
+                "Uploading file c:\\folder1\\file2.txt",
+                "Recording filesize c:\\folder1\\file2.txt"
+            });
+
+            httpPostList.Should().BeEquivalentTo(new[]
+            {
+                (new Uri("https://server2.demo"), "{operation: 'upload', filename: c:\\folder1\\file1.txt, contents: AQIDBA== }"),
+                (new Uri("https://server1.demo"), "{operation: 'recordSize', filename: c:\\folder1\\file1.txt, size: 4 }"),
+                (new Uri("https://server2.demo"), "{operation: 'upload', filename: c:\\folder1\\file2.txt, contents: AQIDBAUG }"),
+                (new Uri("https://server1.demo"), "{operation: 'recordSize', filename: c:\\folder1\\file2.txt, size: 6 }")
+            });
+
+            httpPutList.Should().BeEmpty();
+        }
+
+        public static var Create()
+        {
+            var processFolderPotentiallyPure = processFolder
+                [processSubFolders: true]
+                [processFile: processFile]
+                [recordFileSize: recordFileSize[serverUrl: new Uri("https://server1.demo")]]
+                [uploadFile: uploadFile[serverUrl: new Uri("https://server2.demo"), useHttpPut: false]]
+                .Join(log)
+                .Join(httpPost);
+
+            return processFolderPotentiallyPure;
         }
     }
 }

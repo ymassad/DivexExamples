@@ -20,12 +20,16 @@ module FSharpModule2 =
         sprintf "Recording filesize %s" filename |> log
         recordFileSize filename size
 
-    let recordFileSize filename (size: int64) httpPost serverUrl =
-        let message = sprintf "{filename: %s, size: %i }" filename size
+    let recordFileSize filename (size: int64) httpPost (serverUrl: Uri ) =
+        let message = sprintf "{operation: 'recordSize', filename: %s, size: %i }" filename size
         httpPost serverUrl message
 
-    let uploadFile filename serverUrl useHttpPut = 
-        printf "Uploading file %s to %s. Using HTTP put %b" filename serverUrl useHttpPut
+    let uploadFile filename (serverUrl: Uri) useHttpPut httpPost httpPut readFile = 
+        let fileContents = readFile filename
+        let fileContentsBase64 = Convert.ToBase64String(fileContents)
+        let message = sprintf "{operation: 'upload', filename: %s, contents: %s }" filename fileContentsBase64
+        let httpFunction = if useHttpPut then httpPut else httpPost
+        httpFunction serverUrl message
 
     let getFiles folderPath (searchOption: SearchOption) =
         Directory.GetFiles (folderPath, "*.*", searchOption)
@@ -33,6 +37,10 @@ module FSharpModule2 =
     let getFileSize filename =
         FileInfo(filename).Length
 
-    let httpPost serverUrl message log =
-        sprintf "Posting %s to %s" message serverUrl |> log
-        printf "Posting %s to %s" message serverUrl
+    let httpPost (serverUrl: Uri) message log =
+        sprintf "Posting %s to %O" message serverUrl |> log
+        printf "Posting %s to %O" message serverUrl
+
+    let httpPut (serverUrl: Uri) message log =
+        sprintf "Putting %s to %O" message serverUrl |> log
+        printf "Putting %s to %O" message serverUrl
