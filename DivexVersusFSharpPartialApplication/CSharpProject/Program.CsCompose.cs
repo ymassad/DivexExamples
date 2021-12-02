@@ -24,10 +24,13 @@ namespace CSharpProject
         static void Main(string[] args)
         {
             /*
+    let server1Url = Uri("https://server1.demo");
+    let server2Url = Uri("https://server2.demo");
     let log1 = logToFile "c:\\log1.txt"
     let httpPost1 = httpPost log1
-    let uploadFile1 = uploadFile "https://server2.demo" false
-    let recordFileSize1 = recordFileSize httpPost1 "https://server1.demo"
+    let httpPut1 = httpPut log1
+    let uploadFile1 = uploadFile server2Url false httpPost1 httpPut1 File.ReadAllBytes
+    let recordFileSize1 = recordFileSize httpPost1 server1Url
     let processFile1 = processFile getFileSize recordFileSize1 uploadFile1 log1
     let processFolder1 = processFolder processFile1 log1 true getFiles
 */

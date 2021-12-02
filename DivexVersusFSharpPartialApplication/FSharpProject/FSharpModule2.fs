@@ -5,7 +5,11 @@ open System
 
 module FSharpModule2 =
     let processFolder folderPath processFile log processSubFolders getFiles =
-        let searchOption = if processSubFolders then SearchOption.AllDirectories else SearchOption.TopDirectoryOnly
+        let searchOption =
+            if processSubFolders then
+                SearchOption.AllDirectories
+            else
+                SearchOption.TopDirectoryOnly
         let files = getFiles folderPath searchOption
         files |> Array.iter 
             (fun file -> (sprintf "Processing file %s" file |> log; processFile file; ))
@@ -21,13 +25,18 @@ module FSharpModule2 =
         recordFileSize filename size
 
     let recordFileSize filename (size: int64) httpPost (serverUrl: Uri ) =
-        let message = sprintf "{operation: 'recordSize', filename: %s, size: %i }" filename size
+        let message =
+            sprintf "{operation: 'recordSize', filename: %s, size: %i }" filename size
         httpPost serverUrl message
 
     let uploadFile filename (serverUrl: Uri) useHttpPut httpPost httpPut readFile = 
         let fileContents = readFile filename
         let fileContentsBase64 = Convert.ToBase64String(fileContents)
-        let message = sprintf "{operation: 'upload', filename: %s, contents: %s }" filename fileContentsBase64
+        let message =
+            sprintf
+                "{operation: 'upload', filename: %s, contents: %s }"
+                filename
+                fileContentsBase64
         let httpFunction = if useHttpPut then httpPut else httpPost
         httpFunction serverUrl message
 
